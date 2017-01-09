@@ -5,9 +5,11 @@ import java.awt.Graphics;
 public class Character extends Entity {
     int originX,originY; //were it was first paresed
     int moveScale; //how big the movements re
+    long lastShot;
 
     public Character(int x, int y, int width, int height) {
         super(x, y, width, height);
+        lastShot = System.currentTimeMillis();
         originX = x; 
         originY = y;
         moveScale = 150;
@@ -46,6 +48,14 @@ public class Character extends Entity {
     public void draw(Graphics g) {
         super.draw(g);
 
+    }
+    
+    public long getLastShot(){
+    return lastShot;
+    }
+    
+    public void setLastShot(long lastShot){
+    this.lastShot = lastShot;
     }
 
 }

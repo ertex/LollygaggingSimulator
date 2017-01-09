@@ -24,7 +24,7 @@ public class NetworkHandler implements Runnable {
     ObjectInputStream input;
 
     private JTextField ipFeild, portFeild, openPortFeild;
-    private JLabel localIp,localPort;
+    private JLabel localIp, localPort;
     String serverIP;
     int port;
     private JPanel networkPanel;
@@ -142,13 +142,9 @@ public class NetworkHandler implements Runnable {
         networkPanel = new JPanel();
         networkPanel.setLayout(new FlowLayout());
 
-        localIp = new JLabel();
+        localIp = new JLabel("Enter a Ip adress:");
         localPort = new JLabel("your Port:"); //To make it clearer that the textfeild is the server port
-        try {
-            localIp.setText(InetAddress.getLocalHost().getHostAddress()); //This is your LOCAL ip
-        } catch (UnknownHostException ex) {
 
-        }
         ipFeild = new JTextField("IP");
         ipFeild.setPreferredSize(new Dimension(100, 20));
         ipFeild.setVisible(true);
@@ -156,12 +152,12 @@ public class NetworkHandler implements Runnable {
         portFeild = new JTextField("Port");
         portFeild.setPreferredSize(new Dimension(50, 20));
         portFeild.setVisible(true);
-        
+
         openPortFeild = new JTextField("Port");
-        openPortFeild.setText(port+"");
+        openPortFeild.setText(port + "");
         openPortFeild.setPreferredSize(new Dimension(50, 20));
         openPortFeild.setVisible(true);
-        openPortFeild.addActionListener(actionHandler);
+        openPortFeild.addActionListener(actionHandler);//This actionListner won't work
 
         connectButton = new JButton("Connect");
         connectButton.setVisible(true);
@@ -184,4 +180,5 @@ public class NetworkHandler implements Runnable {
     public boolean connected() {
         return connected;
     }
+
 }

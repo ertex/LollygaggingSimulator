@@ -57,7 +57,7 @@ public class Program extends JFrame implements ActionListener {
 
     public void generateProjectiles() {
         for (int i = 0; i < 50; i++) {
-            projectiles.add(new Projectile(300, 201, (byte) 2));
+            projectiles.add(new Projectile(0, 0, (byte) 0));
         }
     }
 
@@ -76,15 +76,21 @@ public class Program extends JFrame implements ActionListener {
                 collitionCheck();
 
             }
+            if (lastRecived > 0) {
+                if (lastRecived == 1) {//The following checks what action the remoteplayer did
+                    remotePlayer.duck();//remotePlayer dicks
 
-            if (lastRecived == 1) {
-                remotePlayer.duck();//remotePlayer dicks
-            } else if (lastRecived == 2) {
-                remotePlayer.jump(); //remotePlayer jumps
-            } else if (lastRecived == 3) {
-                shoot(700, 297, (byte) -2);//remotePlayer shoots a low attack with negative direction
-            } else if (lastRecived == 4) {
-                shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction
+                } else if (lastRecived == 2) {
+                    remotePlayer.jump(); //remotePlayer jumps
+
+                } else if (lastRecived == 3) {//checks what ctionw as perormed and sees if another shot was fired not long ago
+                    shoot(700, 297, (byte) -2);//remotePlayer shoots a low attack with negative direction
+
+                } else if (lastRecived == 4) {//checks what ctionw as perormed and sees if another shot was fired not long ago
+                    shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
+
+                }
+                lastRecived = 0;
             }
 
         }
@@ -157,7 +163,7 @@ public class Program extends JFrame implements ActionListener {
 
     }
 
-    public void shoot(int x, int y, byte speed) { // a method for shooting a projectile
+    public void shoot(int x, int y, byte speed) { // a method for shooting a projectile, In hindsight this method should have been in Chracter
         for (Projectile o : projectiles) { //finds a unactivated projectile and uses it instead of making a new one
             if (!o.getActive()) {
                 o.activate(x, y, speed);
@@ -197,15 +203,17 @@ public class Program extends JFrame implements ActionListener {
                         break;
 
                     case "High attack":
-                        if (networkHandler.connected()) {//cheks if the progrm is connected to remote
+                        if (networkHandler.connected() & localPlayer.getLastShot() + 200 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
                             shoot(300, 201, (byte) 2);
+                            localPlayer.setLastShot(System.currentTimeMillis());
                             networkHandler.sendMessage((byte) 4);
                         }
                         break;
 
                     case "Low attack":
-                        if (networkHandler.connected()) {//cheks if the progrm is connected to remote
+                        if (networkHandler.connected() & localPlayer.getLastShot() + 200 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
                             shoot(300, 297, (byte) 2);
+                            localPlayer.setLastShot(System.currentTimeMillis());
                             networkHandler.sendMessage((byte) 3);
                         }
                         break;
@@ -214,7 +222,8 @@ public class Program extends JFrame implements ActionListener {
                         System.out.println("Connect");
                         networkHandler.connectToServer();
                         break;
-                    case "Port":
+
+                    case "Porta":
                         System.out.println("PORTED");
                         break;
 
