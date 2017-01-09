@@ -203,7 +203,7 @@ public class Program extends JFrame implements ActionListener {
                         break;
 
                     case "High attack":
-                        if (networkHandler.connected() & localPlayer.getLastShot() + 200 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
+                        if (networkHandler.connected() & localPlayer.getLastShot() + 2500 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
                             shoot(300, 201, (byte) 2);
                             localPlayer.setLastShot(System.currentTimeMillis());
                             networkHandler.sendMessage((byte) 4);
@@ -211,7 +211,7 @@ public class Program extends JFrame implements ActionListener {
                         break;
 
                     case "Low attack":
-                        if (networkHandler.connected() & localPlayer.getLastShot() + 200 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
+                        if (networkHandler.connected() & localPlayer.getLastShot() + 2500 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
                             shoot(300, 297, (byte) 2);
                             localPlayer.setLastShot(System.currentTimeMillis());
                             networkHandler.sendMessage((byte) 3);
