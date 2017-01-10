@@ -41,27 +41,27 @@ public class NetworkHandler implements Runnable {
         t.start();
     }
 
-    public void run() {
+    public void run() { //This is the core of the network, it makes sure that everything is executed in the right order
 
         try {
-            serverSocket = new ServerSocket(port, 100);
+            serverSocket = new ServerSocket(port, 100); //creates the server socket that the remote will connect to
         } catch (IOException ex) {
 
         }
         while (running) {
 
-            if (socket == null) {
+            if (socket == null) { //checks if there is a estblished connection, if not: check for incoming connections
                 try {
-                    waitForConnect();
+                    waitForConnect(); 
                 } catch (IOException e) {
 
                 }
             } else {
 
                 try {
-                    setupStreams();
-                    whileConnected();
-                    closeStreams();
+                    setupStreams(); //creates the sockets and connects them
+                    whileConnected();//The program stays here as long as the progrm is running
+                    closeStreams(); //closes all the sokets nice and easy so nothing breaks
                 } catch (IOException ex) {
 
                 }
@@ -86,7 +86,7 @@ public class NetworkHandler implements Runnable {
 
     }
 
-    public void whileConnected() throws IOException {
+    public void whileConnected() throws IOException { //this method is the main core of the class, it recives messages
         Byte message = (byte) 0;//sends a 0 in confirmation that it is connected
         sendMessage(message);
 
@@ -94,7 +94,7 @@ public class NetworkHandler implements Runnable {
             try {
                 message = (byte) input.readObject();
                 System.out.println(socket.getInetAddress().getHostAddress() + ": " + message);
-                Program.lastRecived = message;
+                Program.lastRecived = message; //saves the last recived message/input in a static variable, this might not be the safest approach but it works for this application
 
             } catch (ClassNotFoundException n) {
                 System.out.println("Could not read this");

@@ -77,18 +77,24 @@ public class Program extends JFrame implements ActionListener {
 
             }
             if (lastRecived > 0) {
-                if (lastRecived == 1) {//The following checks what action the remoteplayer did
-                    remotePlayer.duck();//remotePlayer dicks
-
-                } else if (lastRecived == 2) {
-                    remotePlayer.jump(); //remotePlayer jumps
-
-                } else if (lastRecived == 3) {//checks what ctionw as perormed and sees if another shot was fired not long ago
-                    shoot(700, 297, (byte) -2);//remotePlayer shoots a low attack with negative direction
-
-                } else if (lastRecived == 4) {//checks what ctionw as perormed and sees if another shot was fired not long ago
-                    shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
-
+                switch (lastRecived) {
+                    case 1:
+                        //The following checks what action the remoteplayer did
+                        remotePlayer.duck();//remotePlayer dicks
+                        break;
+                    case 2:
+                        remotePlayer.jump(); //remotePlayer jumps
+                        break;
+                    case 3:
+                        //checks what ctionw as perormed and sees if another shot was fired not long ago
+                        shoot(700, 297, (byte) -2);//remotePlayer shoots a low attack with negative direction
+                        break;
+                    case 4:
+                        //checks what ctionw as perormed and sees if another shot was fired not long ago
+                        shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
+                        break;
+                    default:
+                        break;
                 }
                 lastRecived = 0;
             }
@@ -102,16 +108,16 @@ public class Program extends JFrame implements ActionListener {
 
     public void paintComponents() {
         g = canvas.getGraphics();
-        g.clearRect(0, 0, xSize, ySize);
-        localPlayer.draw(g);
-        remotePlayer.draw(g);
-        for (Projectile o : projectiles) {
-            o.draw(g);
+        g.clearRect(0, 0, xSize, ySize); //clears the canvas
+        localPlayer.draw(g); //draws the locl player
+        remotePlayer.draw(g); //draws the remote player
+        for (Projectile o : projectiles) { //itterates though all the projectiles nd calls the method draw
+            o.draw(g);//o.draw only executes correctly if the projectile bool "active" is true
         }
 
     }
 
-    public void createAndShowGUI() {
+    public void createAndShowGUI() { //To be honest, I'm not going to bother commenting this...
         JFrame frame = new JFrame("LollygaggingSimulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         canvas = new Canvas();
@@ -177,12 +183,12 @@ public class Program extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     }
 
-    private class ActionHandler implements ActionListener//this listens if a action is performed
+    private class ActionHandler implements ActionListener//this listens if a action is performed and exceutes the linked action 
     {
 
-        public void actionPerformed(ActionEvent e) //TODO: Make methods instead of doing everything within cases
+        public void actionPerformed(ActionEvent e) 
         {
-            //if (networkHandler.connected()) {
+            
             try {
 
                 String cmd = e.getActionCommand();
