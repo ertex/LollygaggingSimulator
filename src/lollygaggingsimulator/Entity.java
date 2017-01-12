@@ -46,6 +46,11 @@ public class Entity {
         this.x = this.x + x;
 
     }
+    
+    public Rectangle getHitbox(){ // It hurts me that it's not getRect()
+    
+    return hitbox;
+    }
 
     public void draw(Graphics g) {
         g.fillRect(x, y, width, height);

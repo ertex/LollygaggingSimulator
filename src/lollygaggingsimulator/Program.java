@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -77,7 +78,7 @@ public class Program extends JFrame implements ActionListener {
 
             }
             if (lastRecived > 0) {
-                switch (lastRecived) {
+                switch (lastRecived){ //a switch with what the last message was, hence making something understandable from it
                     case 1:
                         //The following checks what action the remoteplayer did
                         remotePlayer.duck();//remotePlayer dicks
@@ -93,8 +94,12 @@ public class Program extends JFrame implements ActionListener {
                         //checks what ctionw as perormed and sees if another shot was fired not long ago
                         shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
                         break;
+                    case (byte)137:  //checks to see if your opponent sent a message that "it" were hit.
+                        JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPPONEN!, this day is awsome!"); //popup with you hit your opponent message
+                        break;
                     default:
                         break;
+
                 }
                 lastRecived = 0;
             }
@@ -102,8 +107,23 @@ public class Program extends JFrame implements ActionListener {
         }
     }
 
-    public void collitionCheck() {
+    public void collitionCheck() {//checks if any of the players have a projectile intersecting one of them.
+        for (Projectile o : projectiles) {
+            if (o.getActive()) { // only checks the ones that is cirrently being used 
+                if (localPlayer.getHitbox().intersects(o.getHitbox())) { //checks the collition of localPlayer, it is only nessecary to check the localPlayer, since both clients are checking
+                    //the main ereson for this is increeced performance and correct sync, else there might be a conflict between what the result is. 
+                    //it might cause some questionable mechanics, i.e one seeing the opponet getting hit while the other one didn't
+                    networkHandler.sendMessage((byte) 137);//sends the code of victory to the other player
+                    JOptionPane.showMessageDialog(Program.this, "YOU WERE HIT, take this as a defeat.");//popup with you lost, hence game over, but this game got infinite replay value!
+                    //So it's not game over, just GAME ON!
+                    //TODO add score counter
+                }
 
+//                if (remotePlayer.getHitbox().intersects(o.getHitbox())) { //checks the collition of remotePlayer
+//
+//                }
+            }
+        }
     }
 
     public void paintComponents() {
@@ -186,9 +206,8 @@ public class Program extends JFrame implements ActionListener {
     private class ActionHandler implements ActionListener//this listens if a action is performed and exceutes the linked action 
     {
 
-        public void actionPerformed(ActionEvent e) 
-        {
-            
+        public void actionPerformed(ActionEvent e) {
+
             try {
 
                 String cmd = e.getActionCommand();
