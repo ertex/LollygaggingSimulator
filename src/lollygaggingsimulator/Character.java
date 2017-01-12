@@ -5,14 +5,14 @@ import java.awt.Graphics;
 public class Character extends Entity {
     int originX,originY; //were it was first paresed
     int moveScale; //how big the movements re
-    long lastShot;
+    long lastShot; //when chaacter last fired it's shot
 
     public Character(int x, int y, int width, int height) {
         super(x, y, width, height);
         lastShot = System.currentTimeMillis();
-        originX = x; 
-        originY = y;
-        moveScale = 150;
+        originX = x; //were it was parsed
+        originY = y;//were it was parsed
+        moveScale = 150;//how high the character moves when it jumps/ducks
         
     }
 

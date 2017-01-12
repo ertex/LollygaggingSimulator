@@ -34,11 +34,11 @@ public class NetworkHandler implements Runnable {
 
     public NetworkHandler(ActionListener actionHandler) {
         running = true;
-        connected = false;
-        port = 33678;
+        connected = false; //wether or not local is connected to remote
+        port = 33678; //the port that will be used to connect to the server
         t = new Thread(this, "NetworkHandler");
         createGUI(actionHandler);
-        t.start();
+        t.start();//also calls for the run
     }
 
     public void run() { //This is the core of the network, it makes sure that everything is executed in the right order
@@ -71,7 +71,7 @@ public class NetworkHandler implements Runnable {
 
     }
 
-    public void setupStreams() throws IOException {
+    public void setupStreams() throws IOException {//creates the streams 
         connected = true;
         output = new ObjectOutputStream(socket.getOutputStream());
         output.flush();
@@ -79,7 +79,7 @@ public class NetworkHandler implements Runnable {
 
     }
 
-    public void waitForConnect() throws IOException {
+    public void waitForConnect() throws IOException { //tries to establish a connection every 1 second with a incoming connection
         System.out.println("Waiting for sombody to connect...");
         serverSocket.setSoTimeout(1000);
         socket = serverSocket.accept();
@@ -104,14 +104,14 @@ public class NetworkHandler implements Runnable {
 
     }
 
-    public void closeStreams() throws IOException {
+    public void closeStreams() throws IOException { //yep, this turns of the streams
         output.close();
         input.close();
         socket.close();
         socket = null;
     }
 
-    public void sendMessage(Byte message) {
+    public void sendMessage(Byte message) { //sends a message to remote
 
         try {
             output.writeObject(message);
@@ -124,7 +124,7 @@ public class NetworkHandler implements Runnable {
 
     }
 
-    public void connectToServer() throws IOException {
+    public void connectToServer() throws IOException {//tries to send a connection to another client
 
         System.out.println("Connecting to ..." + ipFeild.getText() + " : " + portFeild.getText());
         try {

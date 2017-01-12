@@ -137,7 +137,7 @@ public class Program extends JFrame implements ActionListener {
 
     }
 
-    public void createAndShowGUI() { //To be honest, I'm not going to bother commenting this...
+    public void createAndShowGUI() { //To be honest, I'm not going to bother commenting this... sorry...
         JFrame frame = new JFrame("LollygaggingSimulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         canvas = new Canvas();
@@ -159,7 +159,7 @@ public class Program extends JFrame implements ActionListener {
         defencePanel.setLayout(new GridLayout(2, 0));
         attackPanel.setLayout(new GridLayout(2, 3));
 
-        button1 = new JButton("Jump");//the panel for Jumping
+        button1 = new JButton("Jump");//the button for Jumping
         button1.setVisible(true);
         button1.setText("Jump");
         button1.addActionListener(actionHandler);
