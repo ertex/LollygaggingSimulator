@@ -94,7 +94,7 @@ public class Program extends JFrame implements ActionListener {
                         //checks what ctionw as perormed and sees if another shot was fired not long ago
                         shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
                         break;
-                    case (byte)137:  //checks to see if your opponent sent a message that "it" were hit.
+                    case (byte)37:  //checks to see if your opponent sent a message that remote were hit.
                         resetProjectiles();
                         JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPPONEN!, this day is awsome!"); //popup with you hit your opponent message
                         resetProjectiles();
@@ -122,7 +122,7 @@ public class Program extends JFrame implements ActionListener {
                 if (localPlayer.getHitbox().intersects(o.getHitbox())) { //checks the collition of localPlayer, it is only nessecary to check the localPlayer, since both clients are checking
                     //the main ereson for this is increeced performance and correct sync, else there might be a conflict between what the result is. 
                     //it might cause some questionable mechanics, i.e one seeing the opponet getting hit while the other one didn't
-                    networkHandler.sendMessage((byte) 137);//sends the code of victory to the other player
+                    networkHandler.sendMessage((byte) 37);//sends the code of victory to the other player
                     resetProjectiles();
                     JOptionPane.showMessageDialog(Program.this, "YOU WERE HIT, take this as a defeat.");//popup with you lost, hence game over, but this game got infinite replay value!
                     //So it's not game over, just GAME ON!
