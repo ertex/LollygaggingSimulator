@@ -57,7 +57,7 @@ public class Program extends JFrame implements ActionListener {
     }
 
     public void generateProjectiles() {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 20; i++) {
             projectiles.add(new Projectile(0, 0, (byte) 0));
         }
     }
@@ -95,7 +95,9 @@ public class Program extends JFrame implements ActionListener {
                         shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
                         break;
                     case (byte)137:  //checks to see if your opponent sent a message that "it" were hit.
+                        resetProjectiles();
                         JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPPONEN!, this day is awsome!"); //popup with you hit your opponent message
+                        resetProjectiles();
                         break;
                     default:
                         break;
@@ -106,6 +108,13 @@ public class Program extends JFrame implements ActionListener {
 
         }
     }
+    
+    public void resetProjectiles(){
+    
+         for (Projectile o : projectiles) {
+         o.setActive(false);
+         }
+    }
 
     public void collitionCheck() {//checks if any of the players have a projectile intersecting one of them.
         for (Projectile o : projectiles) {
@@ -114,6 +123,7 @@ public class Program extends JFrame implements ActionListener {
                     //the main ereson for this is increeced performance and correct sync, else there might be a conflict between what the result is. 
                     //it might cause some questionable mechanics, i.e one seeing the opponet getting hit while the other one didn't
                     networkHandler.sendMessage((byte) 137);//sends the code of victory to the other player
+                    resetProjectiles();
                     JOptionPane.showMessageDialog(Program.this, "YOU WERE HIT, take this as a defeat.");//popup with you lost, hence game over, but this game got infinite replay value!
                     //So it's not game over, just GAME ON!
                     //TODO add score counter
@@ -228,7 +238,7 @@ public class Program extends JFrame implements ActionListener {
                         break;
 
                     case "High attack":
-                        if (networkHandler.connected() & localPlayer.getLastShot() + 2500 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
+                        if (networkHandler.connected() & localPlayer.getLastShot() + 3500 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
                             shoot(300, 201, (byte) 2);
                             localPlayer.setLastShot(System.currentTimeMillis());
                             networkHandler.sendMessage((byte) 4);
@@ -236,7 +246,7 @@ public class Program extends JFrame implements ActionListener {
                         break;
 
                     case "Low attack":
-                        if (networkHandler.connected() & localPlayer.getLastShot() + 2500 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
+                        if (networkHandler.connected() & localPlayer.getLastShot() + 3500 < System.currentTimeMillis()) {//cheks if the progrm is connected to remote and if the previous shot was fired at a sufficent interval
                             shoot(300, 297, (byte) 2);
                             localPlayer.setLastShot(System.currentTimeMillis());
                             networkHandler.sendMessage((byte) 3);

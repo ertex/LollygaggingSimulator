@@ -42,4 +42,7 @@ public class Projectile extends Entity {
         setY(y);
         this.speed = speed;
     }
+    public void setActive(boolean state){
+    active = state;
+    }
 }
