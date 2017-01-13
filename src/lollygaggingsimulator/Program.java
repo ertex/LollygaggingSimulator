@@ -105,7 +105,11 @@ public class Program extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPPONEN!, this day is awsome!"); //popup with you hit your opponent message
                         resetProjectiles();
                         break;
-                    default:
+                    
+                        case(byte)42:
+                            networkHandler.sendMessage(42);
+                            break;
+                                    default:
                         break;
 
                 }
