@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,6 +33,8 @@ public class Program extends JFrame implements ActionListener {
     private JPanel defencePanel;
     private JPanel attackPanel;
     private JPanel guiPanel;
+    
+    private BufferStrategy bs;
 
     private MouseEvent mousePressed;
     private ActionHandler actionHandler = new ActionHandler();
@@ -52,6 +56,8 @@ public class Program extends JFrame implements ActionListener {
         remotePlayer = new Character(700, 200, 100, 100);
         lastUpdateTick = System.currentTimeMillis();
         createAndShowGUI();
+        canvas.createBufferStrategy(2);//creates double buffering in canvas object
+        bs = canvas.getBufferStrategy();
         generateProjectiles();
         run();
     }
@@ -135,14 +141,16 @@ public class Program extends JFrame implements ActionListener {
     }
 
     public void paintComponents() {
-        g = canvas.getGraphics();
+        g = (Graphics2D) bs.getDrawGraphics();
         g.clearRect(0, 0, xSize, ySize); //clears the canvas
         localPlayer.draw(g); //draws the locl player
         remotePlayer.draw(g); //draws the remote player
         for (Projectile o : projectiles) { //itterates though all the projectiles nd calls the method draw
             o.draw(g);//o.draw only executes correctly if the projectile bool "active" is true
         }
-
+if (!bs.contentsLost()) {
+                bs.show();
+            }
     }
 
     public void createAndShowGUI() { //To be honest, I'm not going to bother commenting this... sorry...
@@ -158,7 +166,6 @@ public class Program extends JFrame implements ActionListener {
         attackPanel = new JPanel();
         guiPanel = new JPanel();
 
-        guiPanel.setBackground(Color.blue);
         guiPanel.setSize(xSize, 100);
         frame.add(guiPanel, BorderLayout.NORTH);
         guiPanel.add(defencePanel, BorderLayout.WEST);
@@ -192,7 +199,6 @@ public class Program extends JFrame implements ActionListener {
         attackPanel.add(button4);
 
         frame.add(canvas);
-        canvas.setBackground(Color.red);
         frame.pack();
 
     }
