@@ -111,9 +111,11 @@ public class NetworkHandler implements Runnable {
     public void pingRemote() {//sends a mesge that bounces on remote as "43" nd time gets recorded, see Program.run() "case 42" & "case 43"
         if (connected) {//won't ping unless remote is connected
             foobar++;
-            if (foobar >= 60) {//this is a way that makes it only ping every 60 ittertions, hence not drawing stupid ammounts of power
+            if (foobar >= 120) {//this is a way that makes it only ping every 60 ittertions, hence not drawing stupid ammounts of power
+                foobar = 0;
                 //this solotion is horrible, if I forget to ask you how to do this in  different way, take contact
-                ping = (int) (pingSent - pingRecived) / 60;//this calculates the ping by taking the diference in time between reciving and sending a message
+                ping = (int) (pingSent - pingRecived);//this calculates the ping by taking the diference in time between reciving and sending a message
+                System.out.println(ping +" = " + pingSent + " + " + pingRecived);
                 //this means it lags behind by one tick, but that is close enogh
                 sendMessage((byte) 42);//sends the ping
                 pingSent = System.currentTimeMillis(); //saves the time it was sent
@@ -121,7 +123,8 @@ public class NetworkHandler implements Runnable {
         }
     }
 
-    public void closeStreams() throws IOException { //yep, this turns of the streams
+    public void closeStreams() throws IOException { //yep, this turns of the streams, seems like it's a good thing to do
+        
         output.close();
         input.close();
         socket.close();

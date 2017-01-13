@@ -45,7 +45,7 @@ public class Program extends JFrame implements ActionListener {
     private JButton button4;
 
     private long lastUpdateTick; //Used for updateing 
-    private final int TPS = 60;//USed for the update speed
+    private final int TPS = 30;//USed for the update speed
 
     public Program() {
         System.out.println("started");
