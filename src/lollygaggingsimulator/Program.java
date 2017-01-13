@@ -26,14 +26,13 @@ public class Program extends JFrame implements ActionListener {
     static final int xSize = 1200; // size of the window
     static final int ySize = 600;
     static byte lastRecived;
-    // static final int floor = 400; //The height of the arena floor
 
     private Character localPlayer, remotePlayer;
 
     private JPanel defencePanel;
     private JPanel attackPanel;
     private JPanel guiPanel;
-    
+
     private BufferStrategy bs;
 
     private MouseEvent mousePressed;
@@ -74,6 +73,7 @@ public class Program extends JFrame implements ActionListener {
                 lastUpdateTick = System.currentTimeMillis();//saves the time when it went into the while loop
                 localPlayer.update();
                 remotePlayer.update();
+                networkHandler.pingRemote();
                 for (Projectile o : projectiles) {
                     o.update();
 
@@ -83,8 +83,9 @@ public class Program extends JFrame implements ActionListener {
                 collitionCheck();
 
             }
-            if (lastRecived > 0) {
-                switch (lastRecived){ //a switch with what the last message was, hence making something understandable from it
+            if (lastRecived > 0) { //This is were all the magic happens, all of the incoming messages are sorted here
+                //and the number decrypted to an action
+                switch (lastRecived) { //a switch with what the last message was, hence making something understandable from it
                     case 1:
                         //The following checks what action the remoteplayer did
                         remotePlayer.duck();//remotePlayer dicks
@@ -100,16 +101,21 @@ public class Program extends JFrame implements ActionListener {
                         //checks what ctionw as perormed and sees if another shot was fired not long ago
                         shoot(700, 201, (byte) -2);//remotePlayer shoots a high attack with negative direction      
                         break;
-                    case (byte)37:  //checks to see if your opponent sent a message that remote were hit.
+                    case (byte) 37:  //checks to see if your opponent sent a message that remote were hit.
                         resetProjectiles();
                         JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPPONEN!, this day is awsome!"); //popup with you hit your opponent message
                         resetProjectiles();
                         break;
-                    
-                        case(byte)42:
-                            networkHandler.sendMessage(42);
-                            break;
-                                    default:
+
+                    case (byte) 42:
+                        networkHandler.sendMessage((byte) 43);//bounces back a signal, this is to get the time between the sent and recived ping
+                        break;
+
+                    case (byte) 43:
+                        networkHandler.setPingRecived(System.currentTimeMillis());
+                        break;
+
+                    default:
                         break;
 
                 }
@@ -118,12 +124,12 @@ public class Program extends JFrame implements ActionListener {
 
         }
     }
-    
-    public void resetProjectiles(){
-    
-         for (Projectile o : projectiles) {
-         o.setActive(false);
-         }
+
+    public void resetProjectiles() {
+
+        for (Projectile o : projectiles) {
+            o.setActive(false);
+        }
     }
 
     public void collitionCheck() {//checks if any of the players have a projectile intersecting one of them.
@@ -139,7 +145,6 @@ public class Program extends JFrame implements ActionListener {
                     //TODO add score counter
                 }
 
-
             }
         }
     }
@@ -147,14 +152,16 @@ public class Program extends JFrame implements ActionListener {
     public void paintComponents() {
         g = (Graphics2D) bs.getDrawGraphics();
         g.clearRect(0, 0, xSize, ySize); //clears the canvas
+        g.drawString("ping: " +networkHandler.getPing(), 0, 10);//Prints out the current ping
+        
         localPlayer.draw(g); //draws the locl player
         remotePlayer.draw(g); //draws the remote player
         for (Projectile o : projectiles) { //itterates though all the projectiles nd calls the method draw
             o.draw(g);//o.draw only executes correctly if the projectile bool "active" is true
         }
-if (!bs.contentsLost()) {
-                bs.show();
-            }
+        if (!bs.contentsLost()) {
+            bs.show();
+        }
     }
 
     public void createAndShowGUI() { //To be honest, I'm not going to bother commenting this... sorry...

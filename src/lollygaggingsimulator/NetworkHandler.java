@@ -32,6 +32,10 @@ public class NetworkHandler implements Runnable {
     private Thread t;
     private boolean running, connected;
 
+    private long pingSent, pingRecived; //this is used to get the ping to remote
+    private int ping; //the current ping
+    private int foobar = 0;//This is used in pingRemote, you might want to look the other way?
+
     public NetworkHandler(ActionListener actionHandler) {
         running = true;
         connected = false; //wether or not local is connected to remote
@@ -52,7 +56,7 @@ public class NetworkHandler implements Runnable {
 
             if (socket == null) { //checks if there is a estblished connection, if not: check for incoming connections
                 try {
-                    waitForConnect(); 
+                    waitForConnect();
                 } catch (IOException e) {
 
                 }
@@ -102,6 +106,19 @@ public class NetworkHandler implements Runnable {
 
         } while (true);
 
+    }
+
+    public void pingRemote() {//sends a mesge that bounces on remote as "43" nd time gets recorded, see Program.run() "case 42" & "case 43"
+        if (connected) {//won't ping unless remote is connected
+            foobar++;
+            if (foobar >= 60) {//this is a way that makes it only ping every 60 ittertions, hence not drawing stupid ammounts of power
+                //this solotion is horrible, if I forget to ask you how to do this in  different way, take contact
+                ping = (int) (pingSent - pingRecived) / 60;//this calculates the ping by taking the diference in time between reciving and sending a message
+                //this means it lags behind by one tick, but that is close enogh
+                sendMessage((byte) 42);//sends the ping
+                pingSent = System.currentTimeMillis(); //saves the time it was sent
+            }
+        }
     }
 
     public void closeStreams() throws IOException { //yep, this turns of the streams
@@ -179,6 +196,15 @@ public class NetworkHandler implements Runnable {
 
     public boolean connected() {
         return connected;
+    }
+
+    public int getPing() {
+        return ping;
+
+    }
+
+    public void setPingRecived(long time) {
+        pingRecived = time;
     }
 
 }
