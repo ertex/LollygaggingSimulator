@@ -114,8 +114,7 @@ public class NetworkHandler implements Runnable {
             if (foobar >= 120) {//this is a way that makes it only ping every 60 ittertions, hence not drawing stupid ammounts of power
                 foobar = 0;
                 //this solotion is horrible, if I forget to ask you how to do this in  different way, take contact
-                ping = (int) (pingSent - pingRecived);//this calculates the ping by taking the diference in time between reciving and sending a message
-                System.out.println(ping +" = " + pingSent + " + " + pingRecived);
+                ping = (int) (pingRecived - pingSent);//this calculates the ping by taking the diference in time between reciving and sending a message
                 //this means it lags behind by one tick, but that is close enogh
                 sendMessage((byte) 42);//sends the ping
                 pingSent = System.currentTimeMillis(); //saves the time it was sent

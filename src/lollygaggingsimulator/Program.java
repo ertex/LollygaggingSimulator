@@ -45,7 +45,7 @@ public class Program extends JFrame implements ActionListener {
     private JButton button4;
 
     private long lastUpdateTick; //Used for updateing 
-    private final int TPS = 30;//USed for the update speed
+    private final int TPS = 60;//USed for the update speed
 
     public Program() {
         System.out.println("started");
@@ -57,12 +57,12 @@ public class Program extends JFrame implements ActionListener {
         createAndShowGUI();
         canvas.createBufferStrategy(2);//creates double buffering in canvas object
         bs = canvas.getBufferStrategy();
-        generateProjectiles();
+        generateProjectiles(); //creates the projectiles that will be used 
         run();
     }
 
     public void generateProjectiles() {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             projectiles.add(new Projectile(0, 0, (byte) 0));
         }
     }
@@ -103,7 +103,7 @@ public class Program extends JFrame implements ActionListener {
                         break;
                     case (byte) 37:  //checks to see if your opponent sent a message that remote were hit.
                         resetProjectiles();
-                        JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPPONEN!, this day is awsome!"); //popup with you hit your opponent message
+                        JOptionPane.showMessageDialog(Program.this, "YOU HIT THE OPONENT!, you re winer!"); //popup with you hit your opponent message
                         resetProjectiles();
                         break;
 
