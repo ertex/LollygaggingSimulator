@@ -129,9 +129,7 @@ public class Program extends JFrame implements ActionListener {
                     //TODO add score counter
                 }
 
-//                if (remotePlayer.getHitbox().intersects(o.getHitbox())) { //checks the collition of remotePlayer
-//
-//                }
+
             }
         }
     }
