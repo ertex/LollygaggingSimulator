@@ -97,7 +97,6 @@ public class NetworkHandler implements Runnable {
         do {
             try {
                 message = (byte) input.readObject();
-                System.out.println(socket.getInetAddress().getHostAddress() + ": " + message);
                 Program.lastRecived = message; //saves the last recived message/input in a static variable, this might not be the safest approach but it works for this application
 
             } catch (ClassNotFoundException n) {
@@ -135,7 +134,6 @@ public class NetworkHandler implements Runnable {
         try {
             output.writeObject(message);
             output.flush();
-            System.out.println(message + " was sent");
         } catch (IOException e) {
             System.out.println("Could not send that message");
 
